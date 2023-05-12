@@ -1,0 +1,6 @@
+venv/
+saved_models/
+inputs/
+logs/
+outputs/
+
