@@ -1,0 +1,18 @@
+Model: "glove_bilstm"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ embedding_4 (Embedding)     (None, None, 100)         69783500  
+                                                                 
+ bidirectional_1 (Bidirectio  (None, 200)              160800    
+ nal)                                                            
+                                                                 
+ dense_2 (Dense)             (None, 10)                2010      
+                                                                 
+ dense_3 (Dense)             (None, 1)                 11        
+                                                                 
+=================================================================
+Total params: 69,946,321
+Trainable params: 162,821
+Non-trainable params: 69,783,500
+_________________________________________________________________
