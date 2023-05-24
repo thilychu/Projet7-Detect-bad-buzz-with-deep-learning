@@ -3,4 +3,5 @@ saved_models/
 inputs/
 logs/
 outputs/
+notebooks/mlruns/
 
