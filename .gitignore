@@ -4,4 +4,5 @@ inputs/
 logs/
 outputs/
 notebooks/mlruns/
+input_app/
 
