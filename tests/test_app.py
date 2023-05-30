@@ -26,8 +26,8 @@ class FlaskAppTests(unittest.TestCase):
         response = self.app.post('/predict', data=test_data)
         self.assertEqual(response.status_code, 200)
         result = json.loads(response.data)['result']
-        if expected_output in result: st_result = expected_output
-        self.assertEqual(st_result, expected_output)
+        if expected_output in result: result = expected_output
+        self.assertEqual(result, expected_output)
         
 
     def test_prediction_negative(self):
@@ -38,8 +38,8 @@ class FlaskAppTests(unittest.TestCase):
         response = self.app.post('/predict', data=test_data)
         self.assertEqual(response.status_code, 200)
         result = json.loads(response.data)['result']
-        if expected_output in result: st_result = expected_output
-        self.assertEqual(st_result, expected_output)
+        if expected_output in result: result = expected_output
+        self.assertEqual(result, expected_output)
         
 if __name__ == '__main__':
     unittest.main()
