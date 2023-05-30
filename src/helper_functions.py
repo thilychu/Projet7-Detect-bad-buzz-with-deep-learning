@@ -2,7 +2,39 @@
 from sklearn import metrics
 from sklearn.preprocessing import LabelEncoder
 
+# Tokenizers, Stemmers and Lemmatizers
+import nltk
+from nltk.corpus import stopwords
+import spacy
+# Download resources
+nltk.download("stopwords")
+stopwords = set(stopwords.words("english"))
+# Initialize spacy 'en' model, keeping only tagger component (for efficiency)
+nlp = spacy.load("en_core_web_sm", disable=['parser', 'ner'])
 
+# remove special characters
+def remove_special_characters(texts):
+    #Removing numerical values, Removing Digits and words containing digits
+    l_texts= texts.apply(lambda x: re.sub('\w*\d\w*','', x))
+    #Removing punctations
+    l_texts= l_texts.apply(lambda x: re.sub('[%s]' % re.escape(string.punctuation), '', x))
+    #Removing Extra Spaces
+    l_texts = l_texts.apply(lambda x: re.sub(' +', ' ',x))
+    # remove stock market tickers like $GE
+    l_texts = l_texts.apply(lambda x: re.sub(r'\$\w*', '',x))
+    # remove old style retweet text "RT"
+    l_texts = l_texts.apply(lambda x: re.sub(r'^RT[\s]+', '',x))
+    # remove hyperlinks
+    l_texts = l_texts.apply(lambda x: re.sub(r'https?:\/\/.*[\r\n]*', '',x))
+    # remove hashtags
+    # only removing the hash # sign from the word
+    l_texts = l_texts.apply(lambda x: re.sub(r'#', '',x))
+
+    return l_texts
+
+def tokenize_stopwords_lemmatize(texts, allowed_postags=['NOUN','ADJ','ADV']):
+    tokenized_docs = texts.apply(lambda x: ' '.join([token.lemma_.lower() for token in list(nlp(x)) if token.is_alpha and not token.is_stop]))
+    return tokenized_docs
 def roc_curve(y_pred_proba,y_true,ax):
     #define metrics
     auc = metrics.roc_auc_score(y_true, y_pred_proba)

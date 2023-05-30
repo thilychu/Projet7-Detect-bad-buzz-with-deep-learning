@@ -12,7 +12,7 @@ nltk.download('punkt')
 app = Flask(__name__)
 
 @app.route('/') # default route
-def index():
+def new():
     return render_template('index.html') # 
 @app.route('/predict', methods = ['POST']) # /result route
 def predict():
