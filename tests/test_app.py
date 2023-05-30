@@ -6,13 +6,11 @@
 
 import unittest
 import json
-from application import app
 import os
 import sys
 # Add the path to the 'application' module folder
 application_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(application_folder)
-from utils import Utils
 from application import app
 
 class FlaskAppTests(unittest.TestCase):
