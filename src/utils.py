@@ -3,6 +3,7 @@ from sklearn import metrics
 from sklearn.preprocessing import LabelEncoder
 import re
 import string
+import numpy as np
 
 # Tokenizers, Stemmers and Lemmatizers
 import nltk

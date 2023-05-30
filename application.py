@@ -21,9 +21,9 @@ def predict():
     for sentence in blob.sentences:
         result = sentence.sentiment.polarity
     if result>0:
-        result=str(int(result*100))+"% Positive"
+        result=str(int(result*100))+"% positive"
     elif result<0:
-        result=str(int(abs(result)*100))+"% Negative"
+        result=str(int(abs(result)*100))+"% negative"
     else:
         result="Neutral" # result = polarity value
     return jsonify(result = result)
