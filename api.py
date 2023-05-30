@@ -72,7 +72,7 @@ print(model.summary())
 
 
 @app.route('/') # default route
-def new():
+def index():
     return render_template('index.html') # 
 
 
