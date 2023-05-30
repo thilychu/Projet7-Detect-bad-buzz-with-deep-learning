@@ -18,8 +18,6 @@ from tensorflow import keras
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 
-# In[43]:
-
 
 # remove special characters
 def remove_special_characters(text):
@@ -53,9 +51,6 @@ def encode_text(text):
     return padded_test_sequence
 
 
-# In[44]:
-
-
 # initialize our Flask application and the Keras model
 app = flask.Flask(__name__)
 
@@ -65,18 +60,12 @@ with open('input_app/tokenizer.pickle', 'rb') as in_file:
     
 # Load model
 model = keras.models.load_model("input_app/words2vec_lstm_epoch_50.h5")
-print(model.summary())
-
-
-# In[45]:
 
 
 @app.route('/') # default route
 def index():
     return render_template('index.html') # 
 
-
-# In[46]:
 
 
 @app.route('/predict', methods = ['POST']) # /result route
@@ -94,27 +83,9 @@ def predict():
     return jsonify(result = result)
 
 
-# In[47]:
-
-
 if __name__ == '__main__':
-    #load_model()
-    app.run(debug=True,use_reloader=False, port=8000)
+    app.run(host='0.0.0.0', port=8000)
 
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
 
 
 
