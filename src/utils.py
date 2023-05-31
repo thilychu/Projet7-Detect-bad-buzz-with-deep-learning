@@ -4,6 +4,8 @@ from sklearn.preprocessing import LabelEncoder
 import re
 import string
 import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 # Tokenizers, Stemmers and Lemmatizers
 import nltk
@@ -21,6 +23,36 @@ from sklearn.metrics import precision_score, recall_score, f1_score, confusion_m
 from sklearn.metrics import accuracy_score
     
 class Utils:
+    
+        # remove special characters
+    @staticmethod
+    def clean_sentence(text):
+        #Removing numerical values, Removing Digits and words containing digits
+        text= re.sub('\w*\d\w*','', text)
+        #Removing punctations
+        text= re.sub('[%s]' % re.escape(string.punctuation), '', text)
+        #Removing Extra Spaces
+        text =re.sub(' +', ' ',text)
+        # remove stock market tickers like $GE
+        text = re.sub(r'\$\w*', '',text)
+        # remove old style retweet text "RT"
+        text = re.sub(r'^RT[\s]+', '',text)
+        # remove hyperlinks
+        text = re.sub(r'https?:\/\/.*[\r\n]*', '',text)
+        # remove hashtags
+        # only removing the hash # sign from the word
+        text = re.sub(r'#', '',text)
+        text = text.lower()
+
+        return text
+    
+    @staticmethod
+    def encode_text(text):
+        sequence = tokenizer.texts_to_sequences([text])
+        padded_test_sequence = pad_sequences(sequence, maxlen=30)
+        print(padded_test_sequence)
+        return padded_test_sequence
+
     @staticmethod
     # remove special characters
     def remove_special_characters(texts):
@@ -53,9 +85,9 @@ class Utils:
         y_pred = np.where(y_pred_proba> 0.5, 1, 0)
         cf = confusion_matrix(y, y_pred)
         plt.figure()
-        make_confusion_matrix(cf, categories=['NEGATIVE', 'POSITIVE'], title="Performance du modèle sur le "+title_dataset)
+        Utils.make_confusion_matrix(cf, categories=['NEGATIVE', 'POSITIVE'], title="Performance du modèle sur le "+title_dataset)
         plt.figure()
-        plot_roc_curve(y_pred_proba,y,title='Courbe ROC sur le ' + title_dataset)
+        Utils.plot_roc_curve(y_pred_proba,y,title='Courbe ROC sur le ' + title_dataset)
 
     @staticmethod    
     def plot_roc_curve(y_pred_proba,y_true,title=None):
