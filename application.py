@@ -13,6 +13,7 @@ import joblib
 import pickle
 import flask
 from flask import Flask, jsonify, request, render_template
+import tensorflow
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from src.utils import Utils
