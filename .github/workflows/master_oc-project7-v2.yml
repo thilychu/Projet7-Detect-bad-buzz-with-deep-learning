@@ -2,7 +2,7 @@
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 # More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
 
-name: Build and deploy Python app to Azure Web App - OC-P7
+name: Build and deploy Python app to Azure Web App - OC-Project7-v2
 
 on:
   push:
@@ -15,10 +15,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v2
 
       - name: Set up Python version
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v1
         with:
           python-version: '3.11'
 
@@ -29,9 +29,14 @@ jobs:
       
       - name: Install dependencies
         run: pip install -r requirements.txt
-        
-      # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
-
+      
+      - name: Pause Before Deployment
+        run: sleep 90
+      
+        # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
+      - name: Run unit tests
+        run: python -m unittest discover -s tests -p 'test_app.py'
+      
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v2
         with:
@@ -58,6 +63,6 @@ jobs:
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
         with:
-          app-name: 'OC-P7'
+          app-name: 'OC-Project7-v2'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_310D111BD4F746F6AE8823E3E2C65387 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_94227CC128164133866676F6C1F58050 }}
