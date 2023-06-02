@@ -1,57 +1,37 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# # Implémentation un moteur d’inférence API . 
-# L'objectif de l’API est de renvoyer le sentiment à réception d’un texte brut 'API .
+# In[4]:
 
-# In[42]:
 
-import os
-import re
-import string
-import joblib
-import pickle
-import flask
-from flask import Flask, jsonify, request, render_template
-import tensorflow
-from tensorflow.keras.models import load_model
-from tensorflow.keras.preprocessing.sequence import pad_sequences
-from src.utils import Utils
+from flask import Flask, render_template, request, jsonify
+from textblob import TextBlob
+import nltk
+nltk.download('punkt')
 
-# initialize our Flask application and the Keras model
-app = flask.Flask(__name__)
-
-# Load tokenizer
-with open('input_app/tokenizer.pickle', 'rb') as in_file:
-    tokenizer = pickle.load(in_file)
-    
-# Load model
-model = load_model("input_app/words2vec_lstm_epoch_50.h5")
+app = Flask(__name__)
 
 @app.route('/') # default route
-def index():
+def new():
     return render_template('index.html') # 
-
-
 @app.route('/predict', methods = ['POST']) # /result route
 def predict():
-    text = request.form['name']
-    cleaned_text = Utils.clean_sentence(text)
-    sequence = tokenizer.texts_to_sequences([cleaned_text])
-    encoded_text = pad_sequences(sequence, maxlen=30)
-    result = model.predict(encoded_text)[0][0]
-    
-    if result>0.5:
-        result="The sentiment of this text is "+str(int(result*100))+"% positive"
+    name = request.form['name']
+    blob = TextBlob(name)
+    for sentence in blob.sentences:
+        result = sentence.sentiment.polarity
+    if result>0:
+        result=str(int(result*100))+"% positive"
+    elif result<0:
+        result=str(int(abs(result)*100))+"% negative"
     else:
-        result="The sentiment of this text is "+str(int((1-result)*100))+"% negative"
-
+        result="Neutral" # result = polarity value
     return jsonify(result = result)
-
-
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8000)
+    app.run(debug=True,use_reloader=False, port=8000)
 
+
+# In[ ]:
 
 
 
